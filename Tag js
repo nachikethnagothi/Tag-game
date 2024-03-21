@@ -1,0 +1,59 @@
+const player = document.getElementById('player');
+const enemy = document.getElementById('enemy');
+
+let playerX = 0;
+let playerY = 0;
+
+let enemyX = 200;
+let enemyY = 200;
+
+document.addEventListener('keydown', (event) => {
+    const key = event.key;
+    const step = 10;
+
+    switch (key) {
+        case 'ArrowUp':
+            movePlayer(playerX, playerY - step);
+            break;
+        case 'ArrowDown':
+            movePlayer(playerX, playerY + step);
+            break;
+        case 'ArrowLeft':
+            movePlayer(playerX - step, playerY);
+            break;
+        case 'ArrowRight':
+            movePlayer(playerX + step, playerY);
+            break;
+    }
+
+    checkCollision();
+});
+
+function movePlayer(x, y) {
+    playerX = x;
+    playerY = y;
+    player.style.left = playerX + 'px';
+    player.style.top = playerY + 'px';
+}
+
+function checkCollision() {
+    const playerRect = player.getBoundingClientRect();
+    const enemyRect = enemy.getBoundingClientRect();
+
+    if (
+        playerRect.top < enemyRect.bottom &&
+        playerRect.bottom > enemyRect.top &&
+        playerRect.left < enemyRect.right &&
+        playerRect.right > enemyRect.left
+    ) {
+        alert('Game Over! You got tagged by the enemy.');
+        resetGame();
+    }
+}
+
+function resetGame() {
+    playerX = 0;
+    playerY = 0;
+    player.style.left = playerX + 'px';
+    player.style.top = playerY + 'px';
+}
